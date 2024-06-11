@@ -1,0 +1,7 @@
+quiz-app .quiz-app__slide {
+  display: none;
+}
+
+quiz-app .quiz-app__slide.active {
+  display: block;
+}

@@ -1,0 +1,12 @@
+{
+  "layout": "quiz",
+  "sections": {
+    "main": {
+      "type": "quiz-app",
+      "settings": {}
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

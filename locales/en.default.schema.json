@@ -2938,6 +2938,13 @@
         "name": "Rich text"
       }
     },
+    "quiz-app": {
+      "name": "Quiz",
+      "settings": {},
+      "presets": {
+        "name": "Quiz"
+      }
+    },
     "video": {
       "name": "Video",
       "settings": {
