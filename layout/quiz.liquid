@@ -244,6 +244,10 @@
         font-weight: var(--font-body-weight);
       }
 
+      .section {
+        height: 100%
+      }
+
       @media screen and (min-width: 750px) {
         body {
           font-size: 1.6rem;
@@ -284,7 +288,10 @@
       }
     </script>
   </head>
-  <body class="color-scheme-6 gradient{% if settings.animations_hover_elements != 'none' %} animate--hover-{{ settings.animations_hover_elements }}{% endif %}">
+  <body
+    class="color-scheme-6 gradient{% if settings.animations_hover_elements != 'none' %} animate--hover-{{ settings.animations_hover_elements }}{% endif %}"
+    style="grid-template-rows: auto;"
+  >
     <main id="MainContent" class="content-for-layout focus-none" role="main">
       {{ content_for_layout }}
     </main>

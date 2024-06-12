@@ -3,22 +3,35 @@
 <script src="{{ 'quiz-app.js' | asset_url }}" defer="defer"></script>
 
 <quiz-app>
-  <div class="quiz-app__slide quiz__slide--welcome">
-    <h1>
-      <span>FIND THE PERFECT</span>
-      <span>PRODUCTS FOR YOU</span>
-    </h1>
-    <p>
-      Our personalised consultation will tailor your product line up based on your hair needs and concerns. Let the
-      experts do the hard work for you. Find out your ideal cocktail of hair care designed to make you look as good as
-      you feel.
-    </p>
-    <button class="button quiz-app__next-question-btn">GET STARTED</button>
+  <div class="quiz-app__progress-bar"></div>
+  <div class="quiz-app__slide quiz-app__slide--welcome">
+    <div class="quiz-app__slide--welcome-content">
+      <div>
+        <h1>
+          <span>FIND THE PERFECT</span>
+          <span>PRODUCTS FOR YOU</span>
+        </h1>
+        <p>
+          Our personalised consultation will tailor your product line up based on your hair needs and concerns. Let the
+          experts do the hard work for you. Find out your ideal cocktail of hair care designed to make you look as good
+          as you feel.
+        </p>
+        <button class="button quiz-app__next-question-btn">GET STARTED</button>
+      </div>
+    </div>
   </div>
 
-  <div class="quiz-app__slide quiz__slide--results">
+  <div class="quiz-app__slide quiz-app__slide--results">
     <h2>RESULTS</h2>
     <p>Recommended products:</p>
+    <button class="button quiz-app__restart-quiz-btn">RESTART</button>
+  </div>
+
+  <div class="quiz-app__controls">
+    <div class="quiz-app__controls--inner-wrapper">
+      <button class="button quiz-app__prev-question-btn">GO BACK</button>
+      <button class="button quiz-app__next-question-btn">NEXT</button>
+    </div>
     <button class="button quiz-app__restart-quiz-btn">RESTART</button>
   </div>
 </quiz-app>
@@ -32,3 +45,14 @@
   "settings": []
 }
 {% endschema %}
+
+{% comment %}
+  Colors:
+
+  bg - #F5D6DD
+  text - #101010
+  colored header text - #E33B9F
+  colored header text alt - #E977C2
+  colored text/button/focus ring - #D83696
+  button highlgiht - #FFFFFF
+{% endcomment %}
