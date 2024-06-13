@@ -82,6 +82,7 @@ quiz-app .quiz-app__slide ul li label {
 
   font-weight: var(--font-body-weight-bold);
   line-height: 1.2;
+  cursor: pointer;
 }
 
 quiz-app .quiz-app__slide ul li input[type='checkbox'] {
@@ -266,6 +267,7 @@ quiz-app .quiz-app__controls .button-link {
 
   position: relative;
   text-transform: uppercase;
+  cursor: pointer;
 }
 
 quiz-app .quiz-app__controls .button-link::after {
