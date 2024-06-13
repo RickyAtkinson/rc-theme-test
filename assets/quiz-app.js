@@ -11,51 +11,37 @@ const QUESTIONS_JSON = `
         {
           "text": "Straight",
           "img": "https://cdn.shopify.com/s/files/1/0761/8176/6464/files/straight.png?v=1717104204",
-          "tags": [
-            "straight"
-          ]
+          "tag": "straight"
         },
         {
           "text": "Wavy",
           "img": "https://cdn.shopify.com/s/files/1/0761/8176/6464/files/wavy.png?v=1717104204",
-          "tags": [
-            "wavy"
-          ]
+          "tag": "wavy"
         },
         {
           "text": "Loose curls",
           "img": "https://cdn.shopify.com/s/files/1/0761/8176/6464/files/loose.png?v=1717104204",
-          "tags": [
-            "Loose Curls"
-          ]
+          "tag": "Loose Curls"
         },
         {
           "text": "Ringlets",
           "img": "https://cdn.shopify.com/s/files/1/0761/8176/6464/files/ringlets.png?v=1717104204",
-          "tags": [
-            "Ringlets"
-          ]
+          "tag": "Ringlets"
         },
         {
           "text": "Spirals",
           "img": "https://cdn.shopify.com/s/files/1/0761/8176/6464/files/spirals.png?v=1717104204",
-          "tags": [
-            "curly"
-          ]
+          "tag": "curly"
         },
         {
           "text": "Coils",
           "img": "https://cdn.shopify.com/s/files/1/0761/8176/6464/files/coils.png?v=1717104204",
-          "tags": [
-            "Coils"
-          ]
+          "tag": "Coils"
         },
         {
           "text": "Corkscrew curls",
           "img": "https://cdn.shopify.com/s/files/1/0761/8176/6464/files/corkscrew.png?v=1717104204",
-          "tags": [
-            "Cork Screw Curls"
-          ]
+          "tag": "Cork Screw Curls"
         }
       ]
     },
@@ -66,51 +52,37 @@ const QUESTIONS_JSON = `
         {
           "text": "Breakage & hair growth",
           "img": "https://cdn.shopify.com/s/files/1/0761/8176/6464/files/breakage.png?v=1717104221",
-          "tags": [
-            "breakage and hair growth"
-          ]
+          "tag": "breakage and hair growth"
         },
         {
           "text": "Blonde care",
           "img": "https://cdn.shopify.com/s/files/1/0761/8176/6464/files/blonde-care.png?v=1717104221",
-          "tags": [
-            "blonde care"
-          ]
+          "tag": "blonde care"
         },
         {
           "text": "Vibrant blonde tones",
           "img": "https://cdn.shopify.com/s/files/1/0761/8176/6464/files/vibrant.png?v=1717104220",
-          "tags": [
-            "vibrant blonde tones"
-          ]
+          "tag": "vibrant blonde tones"
         },
         {
           "text": "Curl care",
           "img": "https://cdn.shopify.com/s/files/1/0761/8176/6464/files/curl-care.png?v=1717104221",
-          "tags": [
-            "Curl Care"
-          ]
+          "tag": "Curl Care"
         },
         {
           "text": "Dry & frizzy",
           "img": "https://cdn.shopify.com/s/files/1/0761/8176/6464/files/dry.png?v=1717104221",
-          "tags": [
-            "dry and frizzy"
-          ]
+          "tag": "dry and frizzy"
         },
         {
           "text": "Damaged & over processed",
           "img": "https://cdn.shopify.com/s/files/1/0761/8176/6464/files/damaged.png?v=1717104221",
-          "tags": [
-            "damage and over processed"
-          ]
+          "tag": "damage and over processed"
         },
         {
           "text": "Dull & lacks shine",
           "img": "https://cdn.shopify.com/s/files/1/0761/8176/6464/files/shine.png?v=1717104221",
-          "tags": [
-            "dull and lacks shine"
-          ]
+          "tag": "dull and lacks shine"
         }
       ]
     },
@@ -121,42 +93,32 @@ const QUESTIONS_JSON = `
         {
           "text": "Hair dryer",
           "img": "",
-          "tags": [
-            "hair dryer"
-          ]
+          "tag": "hair dryer"
         },
         {
           "text": "Curling iron",
           "img": "",
-          "tags": [
-            "curling iron"
-          ]
+          "tag": "curling iron"
         },
         {
           "text": "Straightener",
           "img": "",
-          "tags": [
-            "straightener"
-          ]
+          "tag": "straightener"
         },
         {
           "text": "Protective braids",
           "img": "",
-          "tags": [
-            ""
-          ]
+          "tag": ""
         },
         {
           "text": "Air dry",
           "img": "",
-          "tags": [
-            "air dry"
-          ]
+          "tag": "air dry"
         },
         {
           "text": "Other",
           "img": "",
-          "tags": []
+          "tag": ""
         }
       ]
     }
@@ -205,6 +167,7 @@ if (!customElements.get('quiz-app')) {
 
             const optionEle = document.createElement('input');
             optionEle.type = 'checkbox';
+            if (option.tag != '') optionEle.dataset.tag = option.tag;
             optionEle.classList.add('quiz-app__checkbox');
             optionEle.id = `${question.id}-${index}`;
 
@@ -311,11 +274,33 @@ if (!customElements.get('quiz-app')) {
           checkbox.checked = false;
         });
 
+        this.loadingSpinner.classList.remove('hidden');
+
         this.renderCurrentSlide();
       }
 
-      getResults() {
+      async getResults() {
         this.nextQuestion();
+
+        const selectedTags = [];
+        this.checkboxes.forEach((checkbox) => {
+          if (checkbox.checked) selectedTags.push(checkbox.dataset.tag);
+        });
+
+        // TODO: Use GraphQL API to grab products that have at least one matching tag, are active and published
+        const productsJsonUrl = location.origin + '/products.json';
+        const response = await fetch(productsJsonUrl);
+        const productsObj = await response.json();
+
+        const recommendedProducts = [];
+        productsObj.products.forEach((product) => {
+          if (product.published_at) {
+            const intersection = selectedTags.filter((tag) => product.tags.includes(tag));
+
+            if (intersection.length > 0) recommendedProducts.push(product);
+          }
+        });
+        console.log(recommendedProducts);
       }
 
       renderCurrentSlide() {
