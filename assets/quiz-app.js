@@ -1,4 +1,6 @@
 const ACTIVE_SLIDE_CLASS = 'active';
+const SLIDE_IN_LEFT_CLASS = 'animation--slide-in-left';
+const SLIDE_IN_RIGHT_CLASS = 'animation--slide-in-right';
 const QUESTIONS_JSON = `
 {
   "questions": [
@@ -171,6 +173,7 @@ if (!customElements.get('quiz-app')) {
         this.progressBar = this.querySelector('.quiz-app__progress-bar');
         this.controls = this.querySelector('.quiz-app__controls');
         this.resultsSlide = this.querySelector('.quiz-app__slide--results');
+        this.slideWrapper = this.querySelector('.quiz-app__slide-wrapper');
         this.prevSlide = null;
         this.currentSlide = 0;
 
@@ -227,7 +230,7 @@ if (!customElements.get('quiz-app')) {
           });
 
           slideEle.appendChild(optionsEle);
-          this.insertBefore(slideEle, this.resultsSlide);
+          this.slideWrapper.insertBefore(slideEle, this.resultsSlide);
         });
 
         // This needs to be done after the questions slides have been added
@@ -263,23 +266,39 @@ if (!customElements.get('quiz-app')) {
       nextQuestion() {
         if (this.currentSlide + 1 >= this.slides.length) return;
 
+        this.slides[this.currentSlide].classList.remove(SLIDE_IN_LEFT_CLASS, SLIDE_IN_RIGHT_CLASS);
+
         this.prevSlide = this.currentSlide;
         this.currentSlide++;
+
+        this.slides[this.currentSlide].classList.add(SLIDE_IN_LEFT_CLASS);
+
         this.renderCurrentSlide();
       }
 
       prevQuestion() {
         if (this.currentSlide - 1 < 0) return;
 
+        this.slides[this.currentSlide].classList.remove(SLIDE_IN_LEFT_CLASS, SLIDE_IN_RIGHT_CLASS);
+
         this.prevSlide = this.currentSlide;
         this.currentSlide--;
+
+        this.slides[this.currentSlide].classList.add(SLIDE_IN_RIGHT_CLASS);
+
         this.renderCurrentSlide();
       }
 
       restartQuiz() {
         // TODO: Add confirmation popup
+
+        this.slides[this.currentSlide].classList.remove(SLIDE_IN_LEFT_CLASS, SLIDE_IN_RIGHT_CLASS);
+
         this.prevSlide = this.currentSlide;
         this.currentSlide = 0;
+
+        this.slides[this.currentSlide].classList.add(SLIDE_IN_RIGHT_CLASS);
+
         this.renderCurrentSlide();
         // TODO: Reset checkboxes
       }
@@ -314,6 +333,17 @@ if (!customElements.get('quiz-app')) {
           }
         }
       }
+
+      // removeAnimationClasses() {
+      //   this.slides.forEach((slide) => {
+      //     slide.classList.remove(
+      //       SLIDE_IN_LEFT_CLASS,
+      //       SLIDE_IN_RIGHT_CLASS,
+      //       SLIDE_OUT_LEFT_CLASS,
+      //       SLIDE_OUT_RIGHT_CLASS
+      //     );
+      //   });
+      // }
     }
   );
 }
