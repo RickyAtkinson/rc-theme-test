@@ -171,7 +171,10 @@ if (!customElements.get('quiz-app')) {
       constructor() {
         super();
         this.progressBar = this.querySelector('.quiz-app__progress-bar');
+        this.loadingSpinner = this.querySelector('.loading__spinner');
+        this.loadingSpinner.classList.remove('hidden');
         this.controls = this.querySelector('.quiz-app__controls');
+        this.controlsResults = this.querySelector('.quiz-app__controls--results');
         this.resultsSlide = this.querySelector('.quiz-app__slide--results');
         this.slideWrapper = this.querySelector('.quiz-app__slide-wrapper');
         this.prevSlide = null;
@@ -245,20 +248,22 @@ if (!customElements.get('quiz-app')) {
         }
 
         // Add event listeners to buttons
-        this.nextQuestionButtons = Array.from(this.getElementsByClassName('quiz-app__next-question-btn'));
-        this.nextQuestionButtons.forEach((btn) => {
-          btn.addEventListener('click', this.nextQuestion.bind(this));
-        });
+        this.startQuizButton = this.querySelector('.quiz-app__start-quiz-btn');
+        this.startQuizButton.addEventListener('click', this.nextQuestion.bind(this));
 
-        this.prevQuestionButtons = Array.from(this.getElementsByClassName('quiz-app__prev-question-btn'));
-        this.prevQuestionButtons.forEach((btn) => {
-          btn.addEventListener('click', this.prevQuestion.bind(this));
-        });
+        this.nextQuestionButton = this.querySelector('.quiz-app__next-question-btn');
+        this.nextQuestionButton.addEventListener('click', this.nextQuestion.bind(this));
+
+        this.prevQuestionButton = this.querySelector('.quiz-app__prev-question-btn');
+        this.prevQuestionButton.addEventListener('click', this.prevQuestion.bind(this));
 
         this.restartQuizButtons = Array.from(this.getElementsByClassName('quiz-app__restart-quiz-btn'));
         this.restartQuizButtons.forEach((btn) => {
           btn.addEventListener('click', this.restartQuiz.bind(this));
         });
+
+        this.getResultsButton = this.querySelector('.quiz-app__results-btn');
+        this.getResultsButton.addEventListener('click', this.getResults.bind(this));
 
         this.renderCurrentSlide();
       }
@@ -303,6 +308,10 @@ if (!customElements.get('quiz-app')) {
         // TODO: Reset checkboxes
       }
 
+      getResults() {
+        this.nextQuestion();
+      }
+
       renderCurrentSlide() {
         const numOfSlides = this.slides.length;
 
@@ -316,6 +325,17 @@ if (!customElements.get('quiz-app')) {
         if (this.currentSlide > 0 && this.currentSlide < numOfSlides - 1)
           this.controls.classList.add(ACTIVE_SLIDE_CLASS);
         else this.controls.classList.remove(ACTIVE_SLIDE_CLASS);
+        if (this.currentSlide === numOfSlides - 1) this.controlsResults.classList.add(ACTIVE_SLIDE_CLASS);
+        else this.controlsResults.classList.remove(ACTIVE_SLIDE_CLASS);
+
+        // Show correct button in controls
+        if (this.currentSlide === numOfSlides - 2) {
+          this.nextQuestionButton.classList.add('hidden');
+          this.getResultsButton.classList.remove('hidden');
+        } else {
+          this.nextQuestionButton.classList.remove('hidden');
+          this.getResultsButton.classList.add('hidden');
+        }
 
         if (this.prevSlide != null) this.slides[this.prevSlide].classList.remove(ACTIVE_SLIDE_CLASS);
         this.slides[this.currentSlide].classList.add(ACTIVE_SLIDE_CLASS);
@@ -326,24 +346,12 @@ if (!customElements.get('quiz-app')) {
 
         for (let i = 0; i < segments.length; i++) {
           if (i < this.currentSlide) {
-            console.log(this.currentSlide, i);
             segments[i].classList.add(ACTIVE_SLIDE_CLASS);
           } else {
             segments[i].classList.remove(ACTIVE_SLIDE_CLASS);
           }
         }
       }
-
-      // removeAnimationClasses() {
-      //   this.slides.forEach((slide) => {
-      //     slide.classList.remove(
-      //       SLIDE_IN_LEFT_CLASS,
-      //       SLIDE_IN_RIGHT_CLASS,
-      //       SLIDE_OUT_LEFT_CLASS,
-      //       SLIDE_OUT_RIGHT_CLASS
-      //     );
-      //   });
-      // }
     }
   );
 }

@@ -197,6 +197,7 @@ quiz-app .button {
   font-weight: var(--font-body-weight-bold);
   transition: background-color 0.15s ease;
   text-transform: uppercase;
+  padding: 0 1.5rem;
 }
 
 quiz-app .button::after {
@@ -291,6 +292,19 @@ quiz-app .quiz-app__controls .button-link:hover::after {
 quiz-app .quiz-app__controls .quiz-app__controls--inner-wrapper {
   display: flex;
   gap: 12px;
+}
+
+/* Controls - Results */
+quiz-app .quiz-app__controls--results {
+  display: none;
+}
+
+quiz-app .quiz-app__controls--results.active {
+  display: block;
+}
+
+quiz-app .quiz-app__controls--results .button {
+  width: 188px;
 }
 
 /* Transitions */
