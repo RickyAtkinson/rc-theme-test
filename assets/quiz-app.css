@@ -204,6 +204,16 @@ quiz-app .button::after {
   content: none;
 }
 
+quiz-app .button.button-alt {
+  color: rgb(var(--color-button));
+  background-color: rgb(var(--color-button-text));
+}
+
+quiz-app .button.button-alt:hover {
+  color: rgb(var(--color-button-text));
+  background-color: rgb(var(--color-button));
+}
+
 /* Progress  Bar */
 quiz-app .quiz-app__progress-bar {
   display: none;
@@ -244,16 +254,6 @@ quiz-app .quiz-app__controls.active {
 
 quiz-app .quiz-app__controls .button {
   width: 188px;
-}
-
-quiz-app .quiz-app__controls .button-alt {
-  color: rgb(var(--color-button));
-  background-color: rgb(var(--color-button-text));
-}
-
-quiz-app .quiz-app__controls .button-alt:hover {
-  color: rgb(var(--color-button-text));
-  background-color: rgb(var(--color-button));
 }
 
 quiz-app .quiz-app__controls .button-link {
@@ -305,6 +305,73 @@ quiz-app .quiz-app__controls--results.active {
 
 quiz-app .quiz-app__controls--results .button {
   width: 188px;
+}
+
+/* Results page */
+quiz-app .quiz-app__recommended {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  row-gap: 20px;
+  column-gap: 12px;
+  margin-bottom: 3rem;
+}
+
+quiz-app .quiz-app__recommended .quiz-app__product-card {
+  width: 187px;
+}
+
+quiz-app .quiz-app__recommended .quiz-app__product-card a {
+  color: rgb(var(--color-foreground));
+  text-align: left;
+  text-decoration: none;
+}
+
+quiz-app .quiz-app__recommended .quiz-app__product-card a h3 {
+  display: inline-block;
+  text-overflow: ellipsis;
+  word-wrap: break-word;
+  overflow: hidden;
+  height: 38px;
+  font-size: 17px;
+  line-height: 1.1;
+  margin-bottom: 0;
+}
+
+quiz-app .quiz-app__recommended .quiz-app__product-card a p {
+  margin-top: 0;
+}
+
+quiz-app .quiz-app__recommended .quiz-app__product-card a .quiz-app__product-img-wrapper {
+  overflow: hidden;
+}
+
+quiz-app .quiz-app__recommended .quiz-app__product-card a .quiz-app__product-img-wrapper img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  display: block;
+  transition: transform 0.25s ease-out;
+}
+
+quiz-app .quiz-app__recommended .quiz-app__product-card a:hover .quiz-app__product-img-wrapper img {
+  transform: scale(1.1);
+}
+
+quiz-app .quiz-app__recommended .quiz-app__product-card a:hover h3,
+quiz-app .quiz-app__recommended .quiz-app__product-card a:hover p {
+  text-decoration: underline;
+}
+
+quiz-app .quiz-app__recommended .quiz-app__product-card .button {
+  width: 100%;
+}
+
+/* Loading spinner */
+quiz-app .quiz-app__recommended .loading__spinner {
+  width: 5rem;
+  position: initial;
+  margin-top: 3rem;
 }
 
 /* Transitions */

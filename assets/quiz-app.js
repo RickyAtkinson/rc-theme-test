@@ -1,4 +1,5 @@
 const ACTIVE_SLIDE_CLASS = 'active';
+const TEMP_ELEMENT_CLASS = 'quiz-app__tmp-element';
 const SLIDE_IN_LEFT_CLASS = 'animation--slide-in-left';
 const SLIDE_IN_RIGHT_CLASS = 'animation--slide-in-right';
 const QUESTIONS_JSON = `
@@ -135,6 +136,7 @@ if (!customElements.get('quiz-app')) {
         this.progressBar = this.querySelector('.quiz-app__progress-bar');
         this.loadingSpinner = this.querySelector('.loading__spinner');
         this.loadingSpinner.classList.remove('hidden');
+        this.recommendedSection = this.querySelector('.quiz-app__recommended');
         this.controls = this.querySelector('.quiz-app__controls');
         this.controlsResults = this.querySelector('.quiz-app__controls--results');
         this.resultsSlide = this.querySelector('.quiz-app__slide--results');
@@ -274,6 +276,12 @@ if (!customElements.get('quiz-app')) {
           checkbox.checked = false;
         });
 
+        // Remove tmp elements
+        const tmpElements = Array.from(this.getElementsByClassName(TEMP_ELEMENT_CLASS));
+        tmpElements.forEach((ele) => {
+          ele.remove();
+        });
+
         this.loadingSpinner.classList.remove('hidden');
 
         this.renderCurrentSlide();
@@ -287,20 +295,85 @@ if (!customElements.get('quiz-app')) {
           if (checkbox.checked) selectedTags.push(checkbox.dataset.tag);
         });
 
-        // TODO: Use GraphQL API to grab products that have at least one matching tag, are active and published
-        const productsJsonUrl = location.origin + '/products.json';
-        const response = await fetch(productsJsonUrl);
-        const productsObj = await response.json();
+        try {
+          // TODO: Use GraphQL API to grab products that have at least one matching tag, are active and published
+          const productsJsonUrl = location.origin + '/products.json';
+          const response = await fetch(productsJsonUrl);
+          const productsObj = await response.json();
 
-        const recommendedProducts = [];
-        productsObj.products.forEach((product) => {
-          if (product.published_at) {
-            const intersection = selectedTags.filter((tag) => product.tags.includes(tag));
+          const recommendedProducts = [];
+          productsObj.products.forEach((product) => {
+            if (product.published_at) {
+              const intersection = selectedTags.filter((tag) => product.tags.includes(tag));
 
-            if (intersection.length > 0) recommendedProducts.push(product);
+              if (intersection.length > 0) recommendedProducts.push(product);
+            }
+          });
+
+          this.loadingSpinner.classList.add('hidden');
+          if (recommendedProducts.length > 0) {
+            recommendedProducts.forEach((product) => {
+              console.log(product);
+              const productCardEle = document.createElement('div');
+              productCardEle.classList.add('quiz-app__product-card', TEMP_ELEMENT_CLASS);
+
+              const productCardLink = document.createElement('a');
+              productCardLink.href = location.origin + '/products/' + product.handle;
+
+              const productImgWrapperEle = document.createElement('div');
+              productImgWrapperEle.classList.add('quiz-app__product-img-wrapper');
+              const productImgEle = document.createElement('img');
+              productImgEle.src = product.images[0].src;
+              productImgWrapperEle.appendChild(productImgEle);
+              productCardLink.appendChild(productImgWrapperEle);
+
+              const productTitleEle = document.createElement('h3');
+              productTitleEle.innerHTML = product.title;
+              productCardLink.appendChild(productTitleEle);
+
+              const productPriceEle = document.createElement('p');
+              productPriceEle.innerHTML = theme.currency_symbol + product.variants[0].price;
+              productCardLink.appendChild(productPriceEle);
+
+              productCardEle.appendChild(productCardLink);
+
+              // Add to cart button
+              const productCartButtonEle = document.createElement('form');
+              productCartButtonEle.method = 'post';
+              productCartButtonEle.action = '/cart/add';
+
+              const idInputEle = document.createElement('input');
+              idInputEle.type = 'hidden';
+              idInputEle.name = 'id';
+              idInputEle.value = product.variants[0].id;
+              productCartButtonEle.appendChild(idInputEle);
+
+              const quantityInputEle = document.createElement('input');
+              quantityInputEle.type = 'hidden';
+              quantityInputEle.id = 'quantity';
+              quantityInputEle.name = 'quantity';
+              quantityInputEle.value = '1';
+              productCartButtonEle.appendChild(quantityInputEle);
+
+              const buttonInputEle = document.createElement('input');
+              buttonInputEle.type = 'submit';
+              buttonInputEle.value = 'ADD TO CART';
+              buttonInputEle.classList.add('button');
+              productCartButtonEle.appendChild(buttonInputEle);
+
+              productCardEle.appendChild(productCartButtonEle);
+
+              this.recommendedSection.appendChild(productCardEle);
+            });
+          } else {
+            const noProductsMessage = document.createElement('p');
+            noProductsMessage.classList.add('quiz-app__tmp-element');
+            noProductsMessage.innerHTML = 'No products matching your answer where found, please try again.';
+            this.recommendedSection.appendChild(noProductsMessage);
           }
-        });
-        console.log(recommendedProducts);
+        } catch (error) {
+          console.error(`Download error: ${error.message}`);
+        }
       }
 
       renderCurrentSlide() {
