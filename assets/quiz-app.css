@@ -221,10 +221,11 @@ quiz-app .quiz-app__progress-bar div {
 
   background-color: rgb(var(--color-button));
   border-radius: 3px;
+  transition: background-color 0.15s ease;
 }
 
 quiz-app .quiz-app__progress-bar div:not(.active) {
-  opacity: 20%;
+  background-color: rgba(var(--color-button), 0.2);
 }
 
 /* Controls */
