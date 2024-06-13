@@ -1,31 +1,9 @@
-quiz-app {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  height: 100%;
-  padding: 3rem;
-}
-
-quiz-app .quiz-app__slide {
-  flex-grow: 1;
-  text-align: center;
-}
-
-quiz-app .quiz-app__slide--welcome-content {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  height: 100%;
-}
-
-quiz-app .quiz-app__slide--welcome-content div {
-  text-align: center;
-}
-
 /* Buttons */
 quiz-app .button {
   border-radius: 5px;
-  font-weight: 700;
+  font-weight: var(--font-body-weight-bold);
+  transition: background-color 0.15s ease;
+  text-transform: uppercase;
 }
 
 quiz-app .button::after {
@@ -37,13 +15,179 @@ quiz-app .button:hover {
   color: rgb(var(--color-button));
 }
 
+quiz-app {
+  height: 100%;
+  padding: 3rem;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+quiz-app .quiz-app__slide {
+  flex-grow: 1;
+  flex-direction: column;
+
+  text-align: center;
+}
+
+/* Welcome Slide */
+quiz-app .quiz-app__slide--welcome-content {
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+quiz-app .quiz-app__slide--welcome-content div {
+  text-align: center;
+}
+
+/* Question Options List */
+quiz-app .quiz-app__slide ul {
+  padding: 0;
+
+  display: flex;
+  flex-grow: 1;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: center;
+  gap: 15px;
+
+  list-style: none;
+}
+
+quiz-app .quiz-app__slide ul li {
+  display: flex;
+}
+
+quiz-app .quiz-app__slide ul li label {
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 1rem;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  font-weight: var(--font-body-weight-bold);
+  line-height: 1.2;
+}
+
+quiz-app .quiz-app__slide ul li input[type='checkbox'] {
+  display: none;
+}
+
+/* Question options: Image style */
+quiz-app .quiz-app__slide ul li.quiz-app__li--img {
+  width: 144px;
+  flex-direction: column;
+}
+
+quiz-app .quiz-app__slide ul li.quiz-app__li--img label::before {
+  content: '';
+  width: 120px;
+  height: 120px;
+  border: 0 solid rgb(var(--color-button));
+  border-radius: 50%;
+  transition: border-width 0.25s ease;
+  position: absolute;
+}
+
+quiz-app .quiz-app__slide ul li.quiz-app__li--img label {
+  color: rgba(var(--color-foreground), 0.5);
+  transition: color 0.15s ease;
+}
+
+quiz-app .quiz-app__slide ul li.quiz-app__li--img label:hover {
+  color: rgb(var(--color-foreground));
+}
+
+quiz-app .quiz-app__slide ul li.quiz-app__li--img label .quiz-app__label-image-wrapper {
+  width: 120px;
+  height: 120px;
+  margin-bottom: 15px;
+
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+quiz-app .quiz-app__slide ul li.quiz-app__li--img label .quiz-app__label-image-wrapper img {
+  width: 120px;
+  height: 120px;
+
+  border-radius: 50%;
+
+  position: relative; /* Can't use z-index unless this is set */
+  z-index: -1;
+
+  transition: transform 0.15s ease;
+}
+
+quiz-app .quiz-app__slide ul li.quiz-app__li--img label:hover img {
+  transform: scale(1.1);
+}
+
+quiz-app .quiz-app__slide ul li.quiz-app__li--img input:checked + label {
+  /* Checked */
+  color: rgb(var(--color-foreground));
+}
+
+quiz-app .quiz-app__slide ul li.quiz-app__li--img input:checked + label::before {
+  /* Checked */
+  border-width: 4px;
+}
+
+/* Question options: Button style */
+quiz-app .quiz-app__slide ul li.quiz-app__li--btn {
+  height: fit-content;
+}
+
+quiz-app .quiz-app__slide ul li.quiz-app__li--btn label {
+  width: 202px;
+  padding: 15px 1.5rem;
+
+  background-color: rgba(var(--color-button), 0.5);
+  border-radius: 5px;
+
+  line-height: 1;
+  position: relative;
+  transition: background-color 0.15s ease;
+}
+
+quiz-app .quiz-app__slide ul li.quiz-app__li--btn label:hover {
+  background-color: rgba(var(--color-button), 0.75);
+}
+
+quiz-app .quiz-app__slide ul li.quiz-app__li--btn label::before {
+  content: '';
+
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+
+  border: 0 solid rgb(var(--color-button));
+  border-radius: 5px;
+
+  transition: border-width 0.25s ease;
+}
+
+quiz-app .quiz-app__slide ul li.quiz-app__li--btn input:checked + label::before {
+  /* Checked */
+  border-width: 4px;
+}
+
 /* Transitions */
 quiz-app .quiz-app__slide {
   display: none;
 }
 
 quiz-app .quiz-app__slide.active {
-  display: block;
+  display: flex;
 }
 
 quiz-app .quiz-app__progress-bar,
@@ -64,6 +208,7 @@ quiz-app .quiz-app__progress-bar {
 quiz-app .quiz-app__progress-bar div {
   height: 6px;
   width: 85px;
+
   display: block;
 
   background-color: rgb(var(--color-button));
@@ -77,10 +222,58 @@ quiz-app .quiz-app__progress-bar div:not(.active) {
 /* Controls */
 quiz-app .quiz-app__controls {
   flex-direction: column;
-  gap: 5px;
+  align-items: center;
+  gap: 3rem;
 }
+
+quiz-app .quiz-app__controls .button {
+  width: 188px;
+  color: rgb(var(--color-button));
+  background-color: rgb(var(--color-button-text));
+}
+
+quiz-app .quiz-app__controls .button:hover {
+  color: rgb(var(--color-button-text));
+  background-color: rgb(var(--color-button));
+}
+
+quiz-app .quiz-app__controls .button-link {
+  background-color: transparent;
+
+  padding: 4px 2px;
+  border: none;
+
+  color: rgb(var(--color-button));
+  font-weight: var(--font-body-weight-bold);
+  line-height: 1.2;
+
+  position: relative;
+  text-transform: uppercase;
+}
+
+quiz-app .quiz-app__controls .button-link::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: rgb(var(--color-button));
+  transform-origin: bottom right;
+  transition: transform 0.25s ease-out;
+}
+
+quiz-app .quiz-app__controls .button-link:hover::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+
+/* quiz-app .quiz-app__controls .button-link:hover {
+  text-decoration: solid underline rgb(var(--color-button)) 4px;
+} */
 
 quiz-app .quiz-app__controls .quiz-app__controls--inner-wrapper {
   display: flex;
-  gap: 5px;
+  gap: 12px;
 }

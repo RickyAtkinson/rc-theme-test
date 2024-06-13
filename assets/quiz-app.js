@@ -8,48 +8,51 @@ const QUESTIONS_JSON = `
       "options": [
         {
           "text": "Straight",
-          "img": "",
+          "img": "https://cdn.shopify.com/s/files/1/0761/8176/6464/files/straight.png?v=1717104204",
           "tags": [
             "straight"
           ]
         },
         {
           "text": "Wavy",
-          "img": "",
+          "img": "https://cdn.shopify.com/s/files/1/0761/8176/6464/files/wavy.png?v=1717104204",
           "tags": [
             "wavy"
           ]
         },
         {
           "text": "Loose curls",
-          "img": "",
+          "img": "https://cdn.shopify.com/s/files/1/0761/8176/6464/files/loose.png?v=1717104204",
           "tags": [
-            "Loose Curls",
-            "curly"
+            "Loose Curls"
+          ]
+        },
+        {
+          "text": "Ringlets",
+          "img": "https://cdn.shopify.com/s/files/1/0761/8176/6464/files/ringlets.png?v=1717104204",
+          "tags": [
+            "Ringlets"
           ]
         },
         {
           "text": "Spirals",
-          "img": "",
+          "img": "https://cdn.shopify.com/s/files/1/0761/8176/6464/files/spirals.png?v=1717104204",
           "tags": [
-            "Ringlets",
             "curly"
           ]
         },
         {
           "text": "Coils",
-          "img": "",
+          "img": "https://cdn.shopify.com/s/files/1/0761/8176/6464/files/coils.png?v=1717104204",
           "tags": [
-            "Coils",
-            "curly"
+            "Coils"
           ]
         },
         {
           "text": "Corkscrew curls",
-          "img": "",
+          "img": "https://cdn.shopify.com/s/files/1/0761/8176/6464/files/corkscrew.png?v=1717104204",
           "tags": [
-            "Cork Screw Curls",
-            "curly"
+            "Cork Screw Curls"
           ]
         }
       ]
@@ -60,49 +63,49 @@ const QUESTIONS_JSON = `
       "options": [
         {
           "text": "Breakage & hair growth",
-          "img": "",
+          "img": "https://cdn.shopify.com/s/files/1/0761/8176/6464/files/breakage.png?v=1717104221",
           "tags": [
             "breakage and hair growth"
           ]
         },
         {
           "text": "Blonde care",
-          "img": "",
+          "img": "https://cdn.shopify.com/s/files/1/0761/8176/6464/files/blonde-care.png?v=1717104221",
           "tags": [
             "blonde care"
           ]
         },
         {
           "text": "Vibrant blonde tones",
-          "img": "",
+          "img": "https://cdn.shopify.com/s/files/1/0761/8176/6464/files/vibrant.png?v=1717104220",
           "tags": [
             "vibrant blonde tones"
           ]
         },
         {
           "text": "Curl care",
-          "img": "Curl Care",
+          "img": "https://cdn.shopify.com/s/files/1/0761/8176/6464/files/curl-care.png?v=1717104221",
           "tags": [
-            ""
+            "Curl Care"
           ]
         },
         {
           "text": "Dry & frizzy",
-          "img": "",
+          "img": "https://cdn.shopify.com/s/files/1/0761/8176/6464/files/dry.png?v=1717104221",
           "tags": [
             "dry and frizzy"
           ]
         },
         {
           "text": "Damaged & over processed",
-          "img": "",
+          "img": "https://cdn.shopify.com/s/files/1/0761/8176/6464/files/damaged.png?v=1717104221",
           "tags": [
             "damage and over processed"
           ]
         },
         {
           "text": "Dull & lacks shine",
-          "img": "",
+          "img": "https://cdn.shopify.com/s/files/1/0761/8176/6464/files/shine.png?v=1717104221",
           "tags": [
             "dull and lacks shine"
           ]
@@ -171,36 +174,59 @@ if (!customElements.get('quiz-app')) {
         this.prevSlide = null;
         this.currentSlide = 0;
 
+        // Setup question slides
         const questionsObj = JSON.parse(QUESTIONS_JSON);
         questionsObj.questions.forEach((question) => {
           const slideEle = document.createElement('div');
           slideEle.classList.add('quiz-app__slide');
 
+          // Question text
           const questionEle = document.createElement('h2');
           questionEle.innerHTML = question.text;
           slideEle.appendChild(questionEle);
 
+          // Add instruction text
           const instructionEle = document.createElement('p');
           instructionEle.innerHTML = 'Select all that apply';
           slideEle.appendChild(instructionEle);
 
+          // Create question options list
           const optionsEle = document.createElement('ul');
-
           question.options.forEach((option, index) => {
             const listItemEle = document.createElement('li');
+            const listItemEleClass = option.img != '' ? 'quiz-app__li--img' : 'quiz-app__li--btn';
+            listItemEle.classList.add(listItemEleClass);
+
             const optionEle = document.createElement('input');
             optionEle.type = 'checkbox';
             optionEle.id = `${question.id}-${index}`;
+
             const optionLabelEle = document.createElement('label');
-            optionLabelEle.innerHTML = option.text;
             optionLabelEle.htmlFor = `${question.id}-${index}`;
+            optionLabelEle.tabIndex = '0';
+
+            // Insert image if data includes one
+            if (option.img != '') {
+              const imgWrapperEle = document.createElement('div');
+              imgWrapperEle.classList.add('quiz-app__label-image-wrapper');
+              const imgEle = document.createElement('img');
+              imgEle.src = option.img;
+              imgEle.width = '120';
+              imgEle.height = '120';
+              imgWrapperEle.appendChild(imgEle);
+              optionLabelEle.appendChild(imgWrapperEle);
+            }
+
+            const labelTextWrapperEle = document.createElement('span');
+            labelTextWrapperEle.innerHTML = option.text;
+
+            optionLabelEle.appendChild(labelTextWrapperEle);
             listItemEle.appendChild(optionEle);
             listItemEle.appendChild(optionLabelEle);
-
             optionsEle.appendChild(listItemEle);
           });
-          slideEle.appendChild(optionsEle);
 
+          slideEle.appendChild(optionsEle);
           this.insertBefore(slideEle, this.resultsSlide);
         });
 
@@ -215,6 +241,7 @@ if (!customElements.get('quiz-app')) {
           this.progressBar.appendChild(segmentEle);
         }
 
+        // Add event listeners to buttons
         this.nextQuestionButtons = Array.from(this.getElementsByClassName('quiz-app__next-question-btn'));
         this.nextQuestionButtons.forEach((btn) => {
           btn.addEventListener('click', this.nextQuestion.bind(this));
@@ -254,6 +281,7 @@ if (!customElements.get('quiz-app')) {
         this.prevSlide = this.currentSlide;
         this.currentSlide = 0;
         this.renderCurrentSlide();
+        // TODO: Reset checkboxes
       }
 
       renderCurrentSlide() {
