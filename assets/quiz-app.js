@@ -205,6 +205,7 @@ if (!customElements.get('quiz-app')) {
 
             const optionEle = document.createElement('input');
             optionEle.type = 'checkbox';
+            optionEle.classList.add('quiz-app__checkbox');
             optionEle.id = `${question.id}-${index}`;
 
             const optionLabelEle = document.createElement('label');
@@ -238,6 +239,7 @@ if (!customElements.get('quiz-app')) {
 
         // This needs to be done after the questions slides have been added
         this.slides = Array.from(this.getElementsByClassName('quiz-app__slide'));
+        this.checkboxes = Array.from(this.getElementsByClassName('quiz-app__checkbox'));
 
         // Progress bar set up
         for (let i = 1; i < this.slides.length; i++) {
@@ -304,8 +306,12 @@ if (!customElements.get('quiz-app')) {
 
         this.slides[this.currentSlide].classList.add(SLIDE_IN_RIGHT_CLASS);
 
+        // Uncheck all inputs
+        this.checkboxes.forEach((checkbox) => {
+          checkbox.checked = false;
+        });
+
         this.renderCurrentSlide();
-        // TODO: Reset checkboxes
       }
 
       getResults() {
