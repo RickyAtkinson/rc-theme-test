@@ -1,6 +1,5 @@
 quiz-app {
   height: 100%;
-  padding: 3rem;
 
   display: flex;
   flex-direction: column;
@@ -41,16 +40,72 @@ quiz-app .button:hover {
 }
 
 /* Welcome Slide */
+quiz-app .quiz-app__slide--welcome {
+  background-image: var(--quiz-app-welcome-screen-bg);
+  background-size: cover;
+  align-items: center;
+}
+
 quiz-app .quiz-app__slide--welcome-content {
   height: 100%;
+  padding: 3rem 2rem;
+
+  color: rgb(var(--color-button));
 
   display: flex;
   flex-direction: column;
   justify-content: center;
+  text-align: center;
+
+  max-width: 420px;
 }
 
-quiz-app .quiz-app__slide--welcome-content div {
-  text-align: center;
+quiz-app .quiz-app__slide--welcome-content h1 {
+  color: rgb(var(--color-button));
+  font-size: 30px;
+  font-weight: var(--font-body-weight-bold);
+}
+
+quiz-app .quiz-app__slide--welcome-content h1 span {
+  color: rgba(233, 119, 194, 1);
+}
+
+quiz-app .quiz-app__slide--welcome-content p {
+  margin-top: 0;
+  margin-bottom: 3rem;
+}
+
+@media only screen and (min-width: 820px) {
+  quiz-app .quiz-app__slide--welcome {
+    background-image: var(--quiz-app-welcome-screen-bg-dt);
+    align-items: end;
+    background-position-x: -220px;
+  }
+
+  quiz-app .quiz-app__slide--welcome-content {
+    padding: 3rem 5rem 3rem 0;
+    max-width: 50%;
+  }
+}
+
+@media only screen and (min-width: 1080px) {
+  quiz-app .quiz-app__slide--welcome {
+    background-position-x: -110px;
+  }
+
+  quiz-app .quiz-app__slide--welcome-content {
+    padding: 3rem 8rem 3rem 0;
+  }
+}
+
+@media only screen and (min-width: 1400px) {
+  quiz-app .quiz-app__slide--welcome {
+    background-position-x: 0;
+  }
+
+  quiz-app .quiz-app__slide--welcome-content {
+    padding: 3rem 8rem 3rem 0;
+  }
 }
 
 /* Question Options List */
@@ -214,11 +269,12 @@ quiz-app .button.button-alt:hover {
   background-color: rgb(var(--color-button));
 }
 
-/* Progress  Bar */
+/* Progress Bar */
 quiz-app .quiz-app__progress-bar {
   display: none;
   margin-bottom: 4rem;
   gap: 5px;
+  margin-top: 3rem;
 }
 
 quiz-app .quiz-app__progress-bar.active {
@@ -246,6 +302,7 @@ quiz-app .quiz-app__controls {
   flex-direction: column;
   align-items: center;
   gap: 3rem;
+  margin-bottom: 3rem;
 }
 
 quiz-app .quiz-app__controls.active {
@@ -297,6 +354,7 @@ quiz-app .quiz-app__controls .quiz-app__controls--inner-wrapper {
 /* Controls - Results */
 quiz-app .quiz-app__controls--results {
   display: none;
+  margin-bottom: 3rem;
 }
 
 quiz-app .quiz-app__controls--results.active {
