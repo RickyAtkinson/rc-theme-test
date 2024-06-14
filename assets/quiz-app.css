@@ -284,9 +284,21 @@ quiz-app .button.button-alt:hover {
 /* Progress Bar */
 quiz-app .quiz-app__progress-bar {
   display: none;
+  margin-top: 4rem;
   margin-bottom: 4rem;
   gap: 5px;
-  margin-top: 3rem;
+}
+
+@media only screen and (min-width: 820px) {
+  quiz-app .quiz-app__progress-bar {
+    margin-top: 6rem;
+  }
+}
+
+@media only screen and (min-width: 1080px) {
+  quiz-app .quiz-app__progress-bar {
+    margin-top: 8rem;
+  }
 }
 
 quiz-app .quiz-app__progress-bar.active {
