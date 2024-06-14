@@ -4,6 +4,9 @@ quiz-app {
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  font-family: var(--font-body-family);
+  font-size: 15px;
 }
 
 quiz-app .quiz-app__slide-wrapper {
@@ -68,6 +71,7 @@ quiz-app .quiz-app__slide--welcome-content h1 {
 
 quiz-app .quiz-app__slide--welcome-content h1 span {
   color: rgba(233, 119, 194, 1);
+  white-space: nowrap;
 }
 
 quiz-app .quiz-app__slide--welcome-content p {
@@ -95,6 +99,10 @@ quiz-app .quiz-app__slide--welcome-content p {
 
   quiz-app .quiz-app__slide--welcome-content {
     padding: 3rem 8rem 3rem 0;
+  }
+
+  quiz-app .quiz-app__slide--welcome-content h1 {
+    font-size: 50px;
   }
 }
 
@@ -163,6 +171,8 @@ quiz-app .quiz-app__slide ul li.quiz-app__li--img label::before {
 quiz-app .quiz-app__slide ul li.quiz-app__li--img label {
   color: rgba(var(--color-foreground), 0.5);
   transition: color 0.15s ease;
+
+  font-size: 16px;
 }
 
 quiz-app .quiz-app__slide ul li.quiz-app__li--img label:hover {
@@ -253,6 +263,8 @@ quiz-app .button {
   transition: background-color 0.15s ease;
   text-transform: uppercase;
   padding: 0 1.5rem;
+  font-family: var(--font-button-family);
+  font-weight: var(--font-button-weight);
 }
 
 quiz-app .button::after {
@@ -383,6 +395,7 @@ quiz-app .quiz-app__recommended .quiz-app__product-card a {
   color: rgb(var(--color-foreground));
   text-align: left;
   text-decoration: none;
+  font-size: 17px;
 }
 
 quiz-app .quiz-app__recommended .quiz-app__product-card a h3 {
@@ -391,7 +404,6 @@ quiz-app .quiz-app__recommended .quiz-app__product-card a h3 {
   word-wrap: break-word;
   overflow: hidden;
   height: 38px;
-  font-size: 17px;
   line-height: 1.1;
   margin-bottom: 0;
 }

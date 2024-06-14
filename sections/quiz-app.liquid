@@ -1,5 +1,36 @@
 {{ 'quiz-app.css' | asset_url | stylesheet_tag }}
 
+{%- liquid
+  assign body_font_bold = section.settings.type_body_font | font_modify: 'weight', 'bold'
+  assign body_font_italic = section.settings.type_body_font | font_modify: 'style', 'italic'
+  assign body_font_bold_italic = body_font_bold | font_modify: 'style', 'italic'
+
+  assign header_font_bold = section.settings.type_body_font | font_modify: 'weight', 'bold'
+  assign button_font_bold = section.settings.type_body_font | font_modify: 'weight', 'bold'
+%}
+
+{%- style -%}
+  {{ section.settings.type_body_font | font_face: font_display: 'swap' }}
+  {{ body_font_bold | font_face: font_display: 'swap' }}
+  {{ body_font_italic | font_face: font_display: 'swap' }}
+  {{ body_font_bold_italic | font_face: font_display: 'swap' }}
+  {{ section.settings.type_header_font | font_face: font_display: 'swap' }}
+  {{ header_font_bold | font_face: font_display: 'swap' }}
+  {{ section.settings.type_button_font | font_face: font_display: 'swap' }}
+  {{ button_font_bold | font_face: font_display: 'swap' }}
+
+  quiz-app {
+    --font-body-family: {{ section.settings.type_body_font.family }}, {{ section.settings.type_body_font.fallback_families }};
+    --font-body-weight: {{ section.settings.type_body_font.weight }};
+
+    --font-heading-family: {{ section.settings.type_header_font.family }}, {{ section.settings.type_header_font.fallback_families }};
+    --font-heading-weight: var(--font-body-weight-bold);
+
+    --font-button-family: {{ section.settings.type_button_font.family }}, {{ section.settings.type_button_font.fallback_families }};
+    --font-button-weight: var(--font-body-weight-bold);
+  }
+{%- endstyle -%}
+
 <script src="{{ 'quiz-app.js' | asset_url }}" defer="defer"></script>
 
 <quiz-app>
@@ -52,7 +83,29 @@
   "limit": 1,
   "tag": "section",
   "class": "section",
-  "settings": []
+  "settings": [
+    {
+      "type": "font_picker",
+      "id": "type_header_font",
+      "default": "futura_n4",
+      "label": "Header Font",
+      "info": "t:settings_schema.typography.settings.type_header_font.info"
+    },
+    {
+      "type": "font_picker",
+      "id": "type_body_font",
+      "default": "harmonia_sans_n4",
+      "label": "Body Font",
+      "info": "t:settings_schema.typography.settings.type_body_font.info"
+    },
+    {
+      "type": "font_picker",
+      "id": "type_button_font",
+      "default": "futura_n4",
+      "label": "Button Font",
+      "info": "t:settings_schema.typography.settings.type_header_font.info"
+    }
+  ]
 }
 {% endschema %}
 
